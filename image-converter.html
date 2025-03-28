@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Image Converter 🚀</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+        body {
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: radial-gradient(circle, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            animation: pulseGlow 3s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from {
+                box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+            }
+            to {
+                box-shadow: 0 0 35px rgba(255, 0, 255, 0.9);
+            }
+        }
+        input, select, button {
+            margin: 12px;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 18px;
+            background: #1e90ff;
+            color: white;
+            outline: none;
+            width: 100%;
+            max-width: 320px;
+            transition: 0.3s;
+        }
+        button {
+            background: linear-gradient(45deg, #ff2e63, #ff004c);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+        button:hover {
+            background: linear-gradient(45deg, #00adb5, #007f8f);
+            transform: scale(1.1);
+        }
+        #downloadLink {
+            display: none;
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 14px 24px;
+            background: linear-gradient(45deg, #00adb5, #007f8f);
+            color: white;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+        #downloadLink:hover {
+            background: linear-gradient(45deg, #ff2e63, #ff004c);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀  Image Converter 🔥</h1>
+        <input type="file" id="imageInput" accept="image/*">
+        <select id="formatSelect">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WEBP</option>
+        </select>
+        <button onclick="convertImage()">Convert Now 🚀</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <a id="downloadLink">Download 🔽</a>
+    </div>
+    <script>
+        function convertImage() {
+            const fileInput = document.getElementById('imageInput');
+            const format = document.getElementById('formatSelect').value;
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (fileInput.files.length === 0) {
+                alert('Please select an image file.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const convertedImage = canvas.toDataURL(`image/${format}`);
+                    
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = convertedImage;
+                    downloadLink.download = `converted_image.${format}`;
+                    downloadLink.style.display = 'inline-block';
+                };
+                img.src = event.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
